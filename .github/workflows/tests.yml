@@ -1,0 +1,74 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Build + tests on Ubuntu and macOS.
+  # ---------------------------------------------------------------------------
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, macos-14]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -B build
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+  # ---------------------------------------------------------------------------
+  # Code coverage (gcov + gcovr, C equivalent of pytest-cov seen in CM3).
+  # ---------------------------------------------------------------------------
+  coverage:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install gcovr
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install gcovr
+
+      - name: Configure with coverage flags
+        run: cmake -B build -DCMAKE_C_FLAGS="--coverage -O0 -g"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Generate coverage report
+        run: |
+          gcovr --root . \
+                --exclude 'build/_deps/*' \
+                --exclude '.*/tests/.*' \
+                --txt coverage.txt \
+                --xml coverage.xml \
+                --html coverage.html
+          echo "--- Coverage summary ---"
+          cat coverage.txt
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage.txt
+            coverage.xml
+            coverage.html
