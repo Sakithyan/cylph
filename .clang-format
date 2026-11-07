@@ -1,0 +1,15 @@
+# Clang-format configuration for Cylph.
+# Based on the LLVM style with a few project-specific tweaks.
+# See https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+BasedOnStyle: LLVM
+Language: Cpp
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+BreakBeforeBraces: Attach
+PointerAlignment: Left
+AlignConsecutiveMacros: true
+AlignTrailingComments: true
+SortIncludes: true
