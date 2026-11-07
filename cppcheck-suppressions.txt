@@ -1,0 +1,4 @@
+# cppcheck suppressions for Cylph.
+# Add one suppression per line, with a comment explaining why.
+# Example:
+#   missingIncludeSystem  # system headers are not analysed on purpose
