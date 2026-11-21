@@ -30,5 +30,5 @@ target_include_directories(cylph PUBLIC
 include(CTest)
 enable_testing()
 
-# The tests/ subdirectory will be added by issue #5 (Criterion framework):
+# The tests/ subdirectory will be added by issue #5 (Unity framework):
 # add_subdirectory(tests)
