@@ -37,4 +37,31 @@ Array *array_create(size_t length);
  */
 void array_free(Array *a);
 
+/**
+ * Returns the number of elements in an array.
+ *
+ * @param a The array (must not be NULL).
+ * @return The number of elements.
+ */
+size_t array_length(const Array *a);
+
+/**
+ * Reads the element at the given index.
+ *
+ * @param a     The array (must not be NULL).
+ * @param index Position of the element, starting at 0.
+ * @param out   Receives the element (must not be NULL).
+ * @return 0 on success, -1 if the index is out of range.
+ */
+int array_get(const Array *a, size_t index, double *out);
+
+/**
+ * Writes the element at the given index.
+ *
+ * @param a     The array (must not be NULL).
+ * @param index Position of the element, starting at 0.
+ * @param value The value to store.
+ * @return 0 on success, -1 if the index is out of range.
+ */
+int array_set(Array *a, size_t index, double value);
 #endif /* CYLPH_H */
