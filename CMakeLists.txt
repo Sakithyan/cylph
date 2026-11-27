@@ -30,5 +30,7 @@ target_include_directories(cylph PUBLIC
 include(CTest)
 enable_testing()
 
-# The tests/ subdirectory will be added by issue #5 (Unity framework):
-add_subdirectory(tests)
+# --- Modules ------------------------------------------------------------------
+# Each module adds its sources to the library and declares its own tests,
+# kept next to the code in src/<module>/tests/.
+add_subdirectory(src/array)
