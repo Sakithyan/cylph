@@ -80,6 +80,62 @@ static void test_set_out_of_range(void) {
     array_free(empty);
 }
 
+static void test_append_to_empty(void) {
+    Array *a = array_create(0);
+    TEST_ASSERT_EQUAL_INT(0, array_append(a, 3.5));
+    TEST_ASSERT_EQUAL_size_t(1, array_length(a));
+
+    double value = 0.0;
+    TEST_ASSERT_EQUAL_INT(0, array_get(a, 0, &value));
+    TEST_ASSERT_EQUAL_DOUBLE(3.5, value);
+    array_free(a);
+}
+
+static void test_append_after_existing_elements(void) {
+    Array *a = array_create(2);
+    TEST_ASSERT_EQUAL_INT(0, array_set(a, 0, 1.0));
+    TEST_ASSERT_EQUAL_INT(0, array_set(a, 1, 2.0));
+    TEST_ASSERT_EQUAL_INT(0, array_append(a, 3.0));
+    TEST_ASSERT_EQUAL_size_t(3, array_length(a));
+
+    double value = 0.0;
+    TEST_ASSERT_EQUAL_INT(0, array_get(a, 0, &value));
+    TEST_ASSERT_EQUAL_DOUBLE(1.0, value);
+    TEST_ASSERT_EQUAL_INT(0, array_get(a, 1, &value));
+    TEST_ASSERT_EQUAL_DOUBLE(2.0, value);
+    TEST_ASSERT_EQUAL_INT(0, array_get(a, 2, &value));
+    TEST_ASSERT_EQUAL_DOUBLE(3.0, value);
+    array_free(a);
+}
+
+static void test_append_many_keeps_values(void) {
+    /* Many appends force several resizes: values must survive each one. */
+    Array *a = array_create(0);
+    for (size_t i = 0; i < 100; i++) {
+        TEST_ASSERT_EQUAL_INT(0, array_append(a, (double)i));
+    }
+    TEST_ASSERT_EQUAL_size_t(100, array_length(a));
+
+    double value = -1.0;
+    for (size_t i = 0; i < 100; i++) {
+        TEST_ASSERT_EQUAL_INT(0, array_get(a, i, &value));
+        TEST_ASSERT_EQUAL_DOUBLE((double)i, value);
+    }
+    array_free(a);
+}
+
+static void test_appended_element_can_be_set(void) {
+    Array *a = array_create(0);
+    TEST_ASSERT_EQUAL_INT(0, array_append(a, 1.0));
+    TEST_ASSERT_EQUAL_INT(0, array_set(a, 0, 9.0));
+
+    double value = 0.0;
+    TEST_ASSERT_EQUAL_INT(0, array_get(a, 0, &value));
+    TEST_ASSERT_EQUAL_DOUBLE(9.0, value);
+    TEST_ASSERT_EQUAL_INT(-1, array_get(a, 1, &value));
+    array_free(a);
+}
+
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_create_and_free);
@@ -90,5 +146,9 @@ int main(void) {
     RUN_TEST(test_set_then_get);
     RUN_TEST(test_get_out_of_range);
     RUN_TEST(test_set_out_of_range);
+    RUN_TEST(test_append_to_empty);
+    RUN_TEST(test_append_after_existing_elements);
+    RUN_TEST(test_append_many_keeps_values);
+    RUN_TEST(test_appended_element_can_be_set);
     return UNITY_END();
 }
