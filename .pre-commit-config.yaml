@@ -29,6 +29,7 @@ repos:
         args:
           - --enable=warning,style,performance,portability
           - --inline-suppr
+          - --suppressions-list=cppcheck-suppressions.txt
           - --std=c11
           - --error-exitcode=1
           - --quiet
