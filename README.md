@@ -23,13 +23,48 @@ and the memory is handled for you.
 
 ## Build
 
-Build instructions will be added once the build system is in place (see
-issue #2).
+Requirements:
+
+- CMake 3.20 or newer
+- A C11 compiler (GCC, Clang or MSVC)
+- Git (CMake uses it to download the [Unity](https://github.com/ThrowTheSwitch/Unity)
+  test framework during configuration)
+
+From the root of the repository:
+
+```sh
+cmake -B build
+cmake --build build
+```
+
+This builds the `cylph` library and the test executables in the `build/`
+directory.
+
+With a multi-configuration generator such as Visual Studio, also give the
+configuration:
+
+```sh
+cmake --build build --config Debug
+```
 
 ## Running the tests
 
-Test instructions will be added once the test framework is in place (see
-issue #5).
+After building:
+
+```sh
+ctest --test-dir build --output-on-failure
+```
+
+With a multi-configuration generator, add `-C Debug`:
+
+```sh
+ctest --test-dir build -C Debug --output-on-failure
+```
+
+Tests are written with Unity and live next to the code they check, in
+`src/<module>/tests/` (for example `src/core/tests/test_core.c`). Each
+module registers its tests with CTest in its own `src/<module>/CMakeLists.txt`.
+The same commands run in the CI on every pull request (Ubuntu and Windows).
 
 ## Contributing
 
