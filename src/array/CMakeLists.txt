@@ -5,5 +5,8 @@ target_sources(cylph PRIVATE array.c)
 
 # --- Tests ---
 add_executable(test_array tests/test_array.c)
-target_link_libraries(test_array PRIVATE cylph)
+target_link_libraries(test_array PRIVATE
+    cylph
+    unity
+)
 add_test(NAME array COMMAND test_array)
