@@ -37,3 +37,23 @@ void array_free(Array *a) {
     free(a->data);
     free(a);
 }
+
+size_t array_length(const Array *a) {
+    return a->length;
+}
+
+int array_get(const Array *a, size_t index, double *out) {
+    if (index >= a->length) {
+        return -1;
+    }
+    *out = a->data[index];
+    return 0;
+}
+
+int array_set(Array *a, size_t index, double value) {
+    if (index >= a->length) {
+        return -1;
+    }
+    a->data[index] = value;
+    return 0;
+}

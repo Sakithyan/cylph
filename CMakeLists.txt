@@ -36,6 +36,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(unity)
 
+# Cylph works with doubles: enable Unity's TEST_ASSERT_EQUAL_DOUBLE family
+# (disabled by default in Unity).
+target_compile_definitions(unity PUBLIC UNITY_INCLUDE_DOUBLE)
+
 # --- Modules ------------------------------------------------------------------
 add_subdirectory(src/core)
 add_subdirectory(src/array)
