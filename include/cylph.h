@@ -64,4 +64,17 @@ int array_get(const Array *a, size_t index, double *out);
  * @return 0 on success, -1 if the index is out of range.
  */
 int array_set(Array *a, size_t index, double value);
+
+/**
+ * Adds an element at the end of an array.
+ *
+ * The storage grows automatically when it is full: the user never has to
+ * manage memory.
+ *
+ * @param a     The array (must not be NULL).
+ * @param value The value to add.
+ * @return 0 on success, -1 if the memory allocation fails
+ *         (the array is then left unchanged).
+ */
+int array_append(Array *a, double value);
 #endif /* CYLPH_H */
