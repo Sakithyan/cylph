@@ -1,5 +1,6 @@
 #include "cylph.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 
 /* Internal layout of an Array. Hidden from the users of the library. */
@@ -55,5 +56,27 @@ int array_set(Array *a, size_t index, double value) {
         return -1;
     }
     a->data[index] = value;
+    return 0;
+}
+
+int array_append(Array *a, double value) {
+    if (a->length == a->capacity) {
+        /* Refuse to grow if doubling the block size would overflow. */
+        if (a->capacity > SIZE_MAX / 2 / sizeof(double)) {
+            return -1;
+        }
+        size_t new_capacity = a->capacity * 2;
+
+        /* Use a temporary pointer: if realloc fails, a->data is still valid. */
+        double *new_data = realloc(a->data, new_capacity * sizeof(double));
+        if (new_data == NULL) {
+            return -1;
+        }
+        a->data = new_data;
+        a->capacity = new_capacity;
+    }
+
+    a->data[a->length] = value;
+    a->length++;
     return 0;
 }
