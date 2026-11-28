@@ -12,25 +12,30 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-# Export compile_commands.json (needed later for clang-tidy, see #4).
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # --- Library target -----------------------------------------------------------
-
-add_library(cylph
-    src/cylph.c
-)
+# Sources are added by each module via target_sources() in src/<module>/CMakeLists.txt.
+add_library(cylph)
 
 target_include_directories(cylph PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 # --- Tests --------------------------------------------------------------------
-
 include(CTest)
 enable_testing()
 
+# Unity test framework (simple, header-only style, zero system deps).
+include(FetchContent)
+
+FetchContent_Declare(
+    unity
+    GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+    GIT_TAG        v2.6.0
+)
+FetchContent_MakeAvailable(unity)
+
 # --- Modules ------------------------------------------------------------------
-# Each module adds its sources to the library and declares its own tests,
-# kept next to the code in src/<module>/tests/.
+add_subdirectory(src/core)
 add_subdirectory(src/array)

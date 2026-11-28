@@ -66,3 +66,23 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+
+# Build directories
+build/
+cmake-build-*/
+
+# Coverage reports (gcov / gcovr)
+*.gcno
+*.gcda
+*.gcov
+coverage/
+coverage.xml
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
