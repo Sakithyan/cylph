@@ -2,10 +2,6 @@
 
 #include <stdlib.h>
 
-int cylph_version_major(void) { return 0; }
-int cylph_version_minor(void) { return 1; }
-int cylph_version_patch(void) { return 0; }
-
 /* Internal layout of an Array. Hidden from the users of the library. */
 struct Array {
     double *data;    /* elements stored in a heap-allocated block */
@@ -41,7 +37,6 @@ void array_free(Array *a) {
     free(a->data);
     free(a);
 }
-
 
 size_t array_length(const Array *a) {
     return a->length;

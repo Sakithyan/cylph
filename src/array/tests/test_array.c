@@ -1,17 +1,21 @@
 #include <assert.h>
 #include <stddef.h>
 
+#include "unity.h"
 #include "cylph.h"
+
+void setUp(void) {}
+void tearDown(void) {}
 
 static void test_create_and_free(void) {
     Array *a = array_create(5);
-    assert(a != NULL);
+    TEST_ASSERT_NOT_NULL(a);
     array_free(a);
 }
 
 static void test_create_empty(void) {
     Array *a = array_create(0);
-    assert(a != NULL);
+    TEST_ASSERT_NOT_NULL(a);
     array_free(a);
 }
 
@@ -78,13 +82,14 @@ static void test_set_out_of_range(void) {
 }
 
 int main(void) {
-    test_create_and_free();
-    test_create_empty();
-    test_free_null_is_safe();
-    test_length();
-    test_new_elements_are_zero();
-    test_set_then_get();
-    test_get_out_of_range();
-    test_set_out_of_range();
-    return 0;
+    UNITY_BEGIN();
+    RUN_TEST(test_create_and_free);
+    RUN_TEST(test_create_empty);
+    RUN_TEST(test_free_null_is_safe);
+    RUN_TEST(test_length);
+    RUN_TEST(test_new_elements_are_zero);
+    RUN_TEST(test_set_then_get);
+    RUN_TEST(test_get_out_of_range);
+    RUN_TEST(test_set_out_of_range);
+    return UNITY_END();
 }
